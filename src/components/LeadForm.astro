@@ -1,0 +1,303 @@
+---
+import { siteConfig } from '../../site.config';
+
+interface Props {
+  defaultZip?: string;
+}
+
+const { defaultZip = '' } = Astro.props;
+---
+
+<div class="lead-form-container" id="devis-form">
+  <!-- Header -->
+  <div class="lead-form-header">
+    <h3>⚡ Angebote vergleichen</h3>
+    <p>Kostenlos & unverbindlich — In 2 Minuten ausgefüllt</p>
+  </div>
+
+  <!-- Wizard Body -->
+  <div class="lead-form-body" id="lead-wizard">
+    
+    <!-- Step 1: Request Type -->
+    <div class="step-pane active" data-step="1">
+      <span class="step-tag">Schritt 1 von 8</span>
+      <h4>Was möchten Sie anfragen?</h4>
+      <div class="form-btn-list">
+        <button type="button" class="form-select-btn" data-next="true" data-value="combo">☀️ Solarstrom + 🔥 Wärmepumpe (Kombipaket)</button>
+        <button type="button" class="form-select-btn" data-next="true" data-value="pv">☀️ Nur Photovoltaik-Anlage</button>
+        <button type="button" class="form-select-btn" data-next="true" data-value="hp">🔥 Nur Wärmepumpe (Heizung)</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Ownership -->
+    <div class="step-pane" data-step="2">
+      <span class="step-tag">Schritt 2 von 8</span>
+      <h4>Sind Sie Eigentümer der Immobilie?</h4>
+      <div class="form-btn-list">
+        <button type="button" class="form-select-btn" data-next="true">Ja, ich bin Eigentümer</button>
+        <button type="button" class="form-select-btn" data-disqualify="owner">Nein, ich bin Mieter</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Building Type -->
+    <div class="step-pane" data-step="3">
+      <span class="step-tag">Schritt 3 von 8</span>
+      <h4>Um welche Gebäudeart handelt es sich?</h4>
+      <div class="form-btn-list">
+        <button type="button" class="form-select-btn" data-next="true">Einfamilienhaus</button>
+        <button type="button" class="form-select-btn" data-next="true">Zweifamilienhaus</button>
+        <button type="button" class="form-select-btn" data-disqualify="property">Mehrfamilienhaus / Gewerbe</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Roof Size (Solar/Combo only) -->
+    <div class="step-pane" data-step="4">
+      <span class="step-tag">Schritt 4 von 8</span>
+      <h4>Wie groß ist die nutzbare Dachfläche ungefähr?</h4>
+      <div class="form-btn-list">
+        <button type="button" class="form-select-btn" data-next="true">Mehr als 20 m²</button>
+        <button type="button" class="form-select-btn" data-disqualify="roof_size">Weniger als 20 m²</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Roof Material (Solar/Combo only) -->
+    <div class="step-pane" data-step="5">
+      <span class="step-tag">Schritt 5 von 8</span>
+      <h4>Welche Dachdeckung liegt vor?</h4>
+      <div class="form-btn-list">
+        <button type="button" class="form-select-btn" data-next="true">Ziegel / Beton / Metall / Flachdach</button>
+        <button type="button" class="form-select-btn" data-disqualify="asbestos">Schiefer / Asbest</button>
+      </div>
+    </div>
+
+    <!-- Step 6: Heating Area (Heatpump/Combo only) -->
+    <div class="step-pane" data-step="6">
+      <span class="step-tag">Schritt 6 von 8</span>
+      <h4>Wie groß ist die zu beheizende Wohnfläche?</h4>
+      <div class="form-btn-list">
+        <button type="button" class="form-select-btn" data-next="true">Zwischen 80 m² und 250 m²</button>
+        <button type="button" class="form-select-btn" data-disqualify="heating_area">Unter 80 m² oder über 250 m²</button>
+      </div>
+    </div>
+
+    <!-- Step 7: Timing -->
+    <div class="step-pane" data-step="7">
+      <span class="step-tag">Schritt 7 von 8</span>
+      <h4>Wann soll das Projekt umgesetzt werden?</h4>
+      <div class="form-btn-list">
+        <button type="button" class="form-select-btn" data-next="true">In den nächsten 6 Monaten</button>
+        <button type="button" class="form-select-btn" data-disqualify="timing">Später als 6 Monate</button>
+      </div>
+    </div>
+
+    <!-- Step 8: Contact Details -->
+    <div class="step-pane" data-step="8">
+      <span class="step-tag">Letzter Schritt</span>
+      <h4>Angebote kostenlos anfordern</h4>
+      
+      <form id="lead-wizard-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <div class="form-input-group">
+          <label>Postleitzahl</label>
+          <input type="text" name="zip" required pattern="[0-9]{5}" placeholder="z.B. 10115" value={defaultZip} class="form-text-input" />
+        </div>
+        <div class="grid-2col-fields">
+          <div class="form-input-group">
+            <label>Vorname</label>
+            <input type="text" name="firstname" required placeholder="Vorname" class="form-text-input" />
+          </div>
+          <div class="form-input-group">
+            <label>Nachname</label>
+            <input type="text" name="lastname" required placeholder="Nachname" class="form-text-input" />
+          </div>
+        </div>
+        <div class="form-input-group">
+          <label>E-Mail-Adresse</label>
+          <input type="email" name="email" required placeholder="name@beispiel.de" class="form-text-input" />
+        </div>
+        <div class="form-input-group">
+          <label>Telefonnummer</label>
+          <input type="tel" name="phone" required placeholder="z.B. 0170 1234567" class="form-text-input" />
+        </div>
+        
+        <div class="form-legal-note">
+          Mit dem Absenden willigen Sie ein, dass Ihre Daten zur kostenlosen Angebotserstellung an {siteConfig.taptaphome.partnerName} übermittelt und verarbeitet werden.
+        </div>
+
+        <button type="submit" class="form-submit-btn">
+          ⚡ Jetzt Angebote anfordern →
+        </button>
+      </form>
+    </div>
+
+    <!-- Disqualified State -->
+    <div class="step-pane pane-feedback" id="disqualify-pane">
+      <span class="pane-feedback-icon">⚠️</span>
+      <h4>Keine Vermittlung möglich</h4>
+      <p id="disqualify-message">Leider entsprechen Ihre Angaben nicht den Kriterien unserer Fachpartner.</p>
+      <a href="/ratgeber/" class="cta-button cta-pv" style="font-size: 0.8rem; display: inline-block;">
+        Zu den Energie-Ratgebern
+      </a>
+    </div>
+
+    <!-- Success State -->
+    <div class="step-pane pane-feedback" id="success-pane">
+      <span class="pane-feedback-icon">✅</span>
+      <h4>Anfrage erfolgreich übermittelt!</h4>
+      <p>Ihre Anfrage wurde erfolgreich verarbeitet. Sie werden in Kürze von passenden Fachpartnern kontaktiert.</p>
+    </div>
+
+    <!-- Wizard Navigation Footer -->
+    <div class="form-wizard-footer" id="form-footer">
+      <button type="button" id="back-btn" class="form-back-btn" style="visibility: hidden;">← Zurück</button>
+      <span>✓ 100% Kostenlos & Unverbindlich</span>
+    </div>
+
+  </div>
+</div>
+
+<script is:inline define:vars={{ siteConfig }}>
+  (function() {
+    var wizard = document.getElementById('lead-wizard');
+    if (!wizard) return;
+
+    var currentStep = 1;
+    var requestType = 'combo'; // Default
+    var backBtn = document.getElementById('back-btn');
+    var formFooter = document.getElementById('form-footer');
+    var disqualifyPane = document.getElementById('disqualify-pane');
+    var disqualifyMsg = document.getElementById('disqualify-message');
+    var successPane = document.getElementById('success-pane');
+    
+    var disqualifyTexts = {
+      owner: 'Unsere Partner-Fachbetriebe arbeiten ausschließlich mit Hauseigentümern zusammen. Mieter können wir leider nicht vermitteln.',
+      property: 'Dieses Portal vermittelt Angebote für freistehende Einfamilienhäuser und Zweifamilienhäuser. Mehrfamilienhäuser können wir leider nicht abdecken.',
+      roof_size: 'Für eine rentable PV-Anlage ist eine zusammenhängende freie Dachfläche von mindestens 20 m² erforderlich.',
+      asbestos: 'Aus Sicherheitsgründen belegen unsere Fachpartner keine Dächer mit Asbest- oder Schieferdeckung.',
+      heating_area: 'Wärmepumpen-Angebote können wir leider nur für Wohnflächen zwischen 80 m² und 250 m² vermitteln.',
+      timing: 'Unsere Partner-Betriebe können Kapazitäten nur für Projekte reservieren, die innerhalb der nächsten 6 Monate realisiert werden.'
+    };
+
+    function showStep(step) {
+      currentStep = step;
+      var panes = wizard.querySelectorAll('.step-pane[data-step]');
+      
+      panes.forEach(function(pane) {
+        var pStep = parseInt(pane.getAttribute('data-step'), 10);
+        if (pStep === currentStep) {
+          pane.classList.add('active');
+        } else {
+          pane.classList.remove('active');
+        }
+      });
+
+      // Show/Hide back button
+      if (currentStep > 1 && currentStep <= 8) {
+        backBtn.style.visibility = 'visible';
+      } else {
+        backBtn.style.visibility = 'hidden';
+      }
+    }
+
+    // Determine the next step dynamically depending on selected requestType
+    function getNextStep(current) {
+      if (current === 1) return 2;
+      if (current === 2) return 3;
+      if (current === 3) {
+        // Skip roof size questions if user only wants a Heat Pump
+        if (requestType === 'hp') return 6;
+        return 4;
+      }
+      if (current === 4) return 5;
+      if (current === 5) {
+        // Skip heating area question if user only wants PV
+        if (requestType === 'pv') return 7;
+        return 6;
+      }
+      if (current === 6) return 7;
+      if (current === 7) return 8;
+      return 8;
+    }
+
+    function getPrevStep(current) {
+      if (current === 8) return 7;
+      if (current === 7) {
+        if (requestType === 'pv') return 5;
+        return 6;
+      }
+      if (current === 6) {
+        if (requestType === 'hp') return 3;
+        return 5;
+      }
+      if (current === 5) return 4;
+      if (current === 4) return 3;
+      if (current === 3) return 2;
+      if (current === 2) return 1;
+      return 1;
+    }
+
+    // Bind selection buttons
+    wizard.addEventListener('click', function(e) {
+      var btn = e.target.closest('button.form-select-btn');
+      if (!btn) return;
+
+      e.preventDefault();
+
+      // If step 1, save the selected type
+      if (currentStep === 1) {
+        requestType = btn.getAttribute('data-value');
+      }
+
+      if (btn.getAttribute('data-next') === 'true') {
+        var next = getNextStep(currentStep);
+        showStep(next);
+      } else if (btn.getAttribute('data-disqualify')) {
+        var filter = btn.getAttribute('data-disqualify');
+        disqualifyMsg.textContent = disqualifyTexts[filter] || 'Ihre Angaben entsprechen leider nicht den Annahmekriterien der regionalen Fachbetriebe.';
+        
+        // Hide all steps, show disqualify panel
+        var panes = wizard.querySelectorAll('.step-pane');
+        panes.forEach(function(pane) { pane.classList.remove('active'); pane.classList.add('hidden'); });
+        disqualifyPane.classList.add('active');
+        disqualifyPane.classList.remove('hidden');
+        formFooter.style.display = 'none';
+      }
+    });
+
+    // Back button click
+    backBtn.addEventListener('click', function() {
+      var prev = getPrevStep(currentStep);
+      showStep(prev);
+    });
+
+    // Form submit
+    var form = document.getElementById('lead-wizard-form');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Hide all panels, show success
+        var panes = wizard.querySelectorAll('.step-pane');
+        panes.forEach(function(pane) { pane.classList.remove('active'); pane.classList.add('hidden'); });
+        successPane.classList.add('active');
+        successPane.classList.remove('hidden');
+        formFooter.style.display = 'none';
+
+        var pvLink = siteConfig.taptaphome.pv.trackingLink;
+        var hpLink = siteConfig.taptaphome.hp.trackingLink;
+
+        // Perform redirects based on selected campaign type
+        setTimeout(function() {
+          if (requestType === 'pv') {
+            window.location.href = pvLink;
+          } else if (requestType === 'hp') {
+            window.location.href = hpLink;
+          } else if (requestType === 'combo') {
+            // Double Monetization: open PV link in a new tab, redirect main tab to HP link
+            window.open(pvLink, '_blank');
+            window.location.href = hpLink;
+          }
+        }, 1500);
+      });
+    }
+  })();
+</script>

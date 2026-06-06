@@ -1,0 +1,256 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LeadForm from '../components/LeadForm.astro';
+import DualCta from '../components/DualCta.astro';
+import FAQ from '../components/FAQ.astro';
+import { getAllArticles } from '../data/blog-articles';
+import { getAllCities } from '../lib/cities';
+import { siteConfig } from '../../site.config';
+
+const recentArticles = getAllArticles().slice(0, 10);
+const topCities = getAllCities().slice(0, 20);
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": siteConfig.name,
+    "url": "https://" + siteConfig.domain,
+    "description": siteConfig.description,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": siteConfig.faq.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a }
+    }))
+  }
+];
+---
+
+<BaseLayout
+  title={`${siteConfig.niche.heroTitle} | ${siteConfig.name}`}
+  description={siteConfig.description}
+  canonical="/"
+  jsonLd={jsonLd}
+>
+  <!-- Hero Section with Background Image -->
+  <section class="hero-section" style="--hero-bg: url('/images/hero.webp');">
+    <div class="container">
+      <div class="grid grid-cols-2" style="align-items: center; gap: 3rem;">
+        <div>
+          <!-- Animated badge -->
+          <div class="hero-badge sun-pulse">
+            <span>⚡ Doppel-Förderung 2026 nutzen</span>
+          </div>
+
+          <h1 class="hero-title" style="font-size: 2.5rem; line-height: 1.15;">
+            Wärmepumpe mit<br/>
+            <span style="color: var(--accent);">Photovoltaik kombinieren</span>
+          </h1>
+          <p class="hero-subtitle" style="font-size: 1.05rem; margin-top: 1rem; color: rgba(255,255,255,0.9);">
+            {siteConfig.niche.heroSubtitle}
+          </p>
+
+          <!-- Stat callout -->
+          <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.15); border-radius: 0.75rem; padding: 0.75rem 1.25rem; display: inline-block; margin-bottom: 1.5rem;">
+            <span class="font-data" style="font-size: 1.5rem; font-weight: 700; color: var(--accent);">~3.500€</span>
+            <span style="color: rgba(255,255,255,0.85); font-size: 0.8rem; margin-left: 0.5rem; font-weight: 600;">durchschnittliche jährliche Ersparnis</span>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+            {siteConfig.trustBadges.map((badge) => (
+              <span style="background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600;">
+                ✓ {badge}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div>
+          <LeadForm />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Split Visual Flow Line Indicator representation in CSS -->
+  <div style="background: var(--combo-gradient); height: 6px; width: 100%;"></div>
+
+  <!-- Intro Section -->
+  <section style="padding: 5rem 0 3rem 0; background-color: #FFFFFF;">
+    <div class="container" style="max-width: 800px; text-align: center;">
+      <h2 class="section-title">Warum Photovoltaik und Wärmepumpe kombinieren?</h2>
+      <p style="color: var(--text-light); font-size: 1.05rem; line-height: 1.8; margin-bottom: 2rem;">
+        {siteConfig.introText}
+      </p>
+    </div>
+  </section>
+
+  <!-- Dual CTAs -->
+  <div class="container">
+    <DualCta />
+  </div>
+
+  <!-- Autarkie and Economic Table -->
+  <section style="padding: 4rem 0; background-color: var(--bg);">
+    <div class="container">
+      <h2 class="section-title">📊 Wirtschaftlichkeit & Autarkiegrad</h2>
+      <p class="section-desc">Erfahren Sie, wie sich die Kombination beider Systeme auf Ihre Energiekosten und Ihre Unabhängigkeit auswirkt.</p>
+      
+      <div class="grid grid-cols-2" style="gap: 2rem; margin-bottom: 3rem;">
+        <!-- Operating Costs Table -->
+        <div class="table-wrapper">
+          <table class="cost-table">
+            <thead>
+              <tr>
+                <th>Energie-Szenario</th>
+                <th>Energiekosten / Jahr</th>
+                <th>Jährliche Ersparnis</th>
+              </tr>
+            </thead>
+            <tbody>
+              {siteConfig.operatingCosts.map((row) => (
+                <tr class={row.scenario.startsWith('🟢') ? 'total-row' : ''} style={row.scenario.startsWith('🟢') ? 'background-color: #ECFDF5;' : ''}>
+                  <td style={row.scenario.startsWith('🟢') ? 'color: var(--success);' : ''}>{row.scenario}</td>
+                  <td class="font-data" style={row.scenario.startsWith('🟢') ? 'color: var(--success); font-weight:700;' : ''}>{row.cost}</td>
+                  <td style={row.scenario.startsWith('🟢') ? 'color: var(--success); font-weight:700;' : ''}>{row.savings}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Autarkie Card -->
+        <div class="card" style="padding: 2.25rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 1rem; font-weight: 800;">🔋 Unabhängigkeit vom Stromnetz</h3>
+            <p style="font-size: 0.9rem; color: var(--text-light); line-height: 1.6; margin-bottom: 1.5rem;">
+              Mit einer reinen PV-Anlage speisen Sie mittags viel Strom ein, den Sie abends teuer zukaufen müssen. Erst die Kombination mit einer Wärmepumpe und einem Batteriespeicher erhöht die Eigennutzung und senkt den Netzbezug drastisch.
+            </p>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            {siteConfig.autarky.map((item) => (
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding-bottom: 0.5rem;">
+                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text);">{item.system}</span>
+                <span class="font-data" style="font-size: 0.95rem; font-weight: 700; color: var(--solar-color);">{item.rate}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Subsidies Section -->
+  <section style="padding: 4rem 0; background-color: #FFFFFF;">
+    <div class="container">
+      <h2 class="section-title">🏛️ Staatliche Förderung & Steuererleichterungen 2026</h2>
+      <p class="section-desc">Die Kombination aus KfW-Zuschüssen für die Wärmepumpe und dem Nullsteuersatz für Photovoltaik senkt die Anschaffungskosten massiv.</p>
+      
+      <div class="grid grid-cols-3">
+        {siteConfig.subsidies.map((sub) => (
+          <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; border-color: var(--card-border);">
+            <div>
+              <h4 style="font-size: 1.05rem; color: var(--primary); margin-bottom: 0.5rem;">{sub.name}</h4>
+              <span class="font-data" style="font-size: 1.5rem; font-weight: 850; color: var(--heat-color); display: block; margin-bottom: 0.5rem;">
+                {sub.amount}
+              </span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-light); border-top: 1px solid #F1F5F9; padding-top: 0.75rem; margin-top: 0.75rem;">
+              {sub.condition}
+            </p>
+          </div>
+        ))}
+      </div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="/ratgeber/foerderung-fuer-pv-und-waermepumpe-alle-zuschuesse-2026-im-ueberblick/" style="font-weight: 700; color: var(--solar-color);">
+          Mehr Details zur KfW-Förderung erfahren →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dynamic Guide Grid -->
+  <section style="padding: 4rem 0; background-color: var(--bg);">
+    <div class="container">
+      <h2 class="section-title">📚 Beliebte Ratgeber & Fachartikel</h2>
+      <p class="section-desc">Informieren Sie sich umfassend, bevor Sie Angebote vergleichen:</p>
+      
+      <div class="grid grid-cols-3">
+        {recentArticles.map((article) => (
+          <a href={`/ratgeber/${article.slug}/`} class="card" style="display: flex; flex-direction: column; overflow: hidden; padding: 0; text-decoration: none;">
+            <img src={article.image} alt={article.title} style="width: 100%; height: 160px; object-cover; border-bottom: 1px solid #E2E8F0;" />
+            <div style="padding: 1.25rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 0.75rem;">
+              <div>
+                <span class="font-data" style="font-size: 0.65rem; font-weight: 700; color: var(--solar-color); text-transform: uppercase; display: block; margin-bottom: 0.25rem;">
+                  {article.category}
+                </span>
+                <h3 style="font-size: 1rem; color: var(--primary); font-weight: 700; line-height: 1.3;">
+                  {article.title}
+                </h3>
+              </div>
+              <span style="font-weight: 700; font-size: 0.75rem; color: var(--solar-color);">Artikel lesen →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- City Search Section -->
+  <section style="padding: 4rem 0; background-color: #FFFFFF;">
+    <div class="container">
+      <h2 class="section-title">📍 Regionale Angebote vergleichen</h2>
+      <p class="section-desc">Finden Sie geprüfte Heizungs- und Solarfachbetriebe direkt in Ihrer Nähe:</p>
+      
+      <div class="grid grid-cols-5" style="gap: 0.75rem;">
+        {topCities.map((city) => (
+          <a
+            href={`/heizung-solar/${city.slug}/`}
+            style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 0.75rem; padding: 1rem; text-align: center; text-decoration: none; font-weight: 600; color: var(--text); transition: var(--transition-fast);"
+            class="city-link"
+          >
+            <span style="display: block; font-size: 0.9rem; color: var(--primary);">{city.name}</span>
+            <span style="display: block; font-size: 0.75rem; color: var(--text-light); margin-top: 0.25rem;">{city.zip}</span>
+          </a>
+        ))}
+      </div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="/heizung-solar/" style="font-weight: 700; color: var(--solar-color);">
+          Alle Städte in Deutschland anzeigen →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Accordion -->
+  <section style="padding: 4rem 0; background-color: var(--bg);" id="faq">
+    <div class="container">
+      <FAQ items={siteConfig.faq} />
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section style="padding: 5rem 0; background: var(--combo-gradient); color: white; text-align: center;">
+    <div class="container" style="max-width: 700px;">
+      <h2 style="color: white; font-size: 2.25rem; font-weight: 800; margin-bottom: 1rem;">Bereit für die eigene Energiewende?</h2>
+      <p style="color: rgba(255,255,255,0.9); font-size: 1.05rem; margin-bottom: 2rem;">
+        Fordern Sie kostenlose und unverbindliche Angebote für Ihr Komplettpaket oder Ihre Einzellösung an. In 2 Minuten ausgefüllt.
+      </p>
+      <a href="#devis-form" class="cta-button cta-pv" style="background-color: #FFFFFF; color: var(--solar-color); font-size: 1.1rem; padding: 1rem 2rem; border-radius: 0.75rem; box-shadow: var(--shadow-lg);">
+        ⚡ Jetzt Angebote vergleichen
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .city-link:hover {
+    border-color: var(--solar-color) !important;
+    color: var(--solar-color) !important;
+    background-color: #FFF8F1 !important;
+    transform: translateY(-2px);
+  }
+</style>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A237E" />
+      <stop offset="100%" stop-color="#0D1137" />
+    </linearGradient>
+    
+    <!-- Sun/Warmth Glow Gradient -->
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFD54F" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#FF6F00" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Lightning Bolt Gradient -->
+    <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF9C4" />
+      <stop offset="30%" stop-color="#FFEB3B" />
+      <stop offset="100%" stop-color="#FFC107" />
+    </linearGradient>
+
+    <!-- Warmth Ribbon Gradient -->
+    <linearGradient id="warmthGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF3D00" />
+      <stop offset="100%" stop-color="#FF8F00" />
+    </linearGradient>
+  </defs>
+
+  <!-- Smooth rounded square base with dark blue premium gradient -->
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)" />
+
+  <!-- Sun Glow in background -->
+  <circle cx="256" cy="256" r="220" fill="url(#sunGlow)" />
+
+  <!-- Outer Ring representing Solar & Heat loop -->
+  <circle cx="256" cy="256" r="190" fill="none" stroke="url(#warmthGrad)" stroke-width="20" stroke-linecap="round" stroke-dasharray="800 300" transform="rotate(-45 256 256)" />
+
+  <!-- Modern energy/lightning bolt -->
+  <path d="M280 40 L120 280 H240 L200 472 L392 232 H272 Z" fill="url(#boltGrad)" filter="drop-shadow(0px 8px 12px rgba(255, 235, 59, 0.4))" />
+</svg>

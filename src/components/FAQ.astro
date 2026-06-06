@@ -1,0 +1,33 @@
+---
+interface FAQItem {
+  q: string;
+  a: string;
+}
+
+interface Props {
+  items: FAQItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="faq-container" id="faq">
+  <h2 class="section-title">❓ Häufig gestellte Fragen (FAQ)</h2>
+  <p class="section-desc">Hier finden Sie die wichtigsten Antworten rund um die Planung und Installation von Wärmepumpen und Photovoltaikanlagen.</p>
+  
+  <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+    {items.map((item) => (
+      <details class="faq-item">
+        <summary>
+          <span>{item.q}</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </summary>
+        <div class="faq-answer">
+          <p set:html={item.a}></p>
+        </div>
+      </details>
+    ))}
+  </div>
+</div>

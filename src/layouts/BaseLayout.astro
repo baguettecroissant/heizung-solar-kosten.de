@@ -1,0 +1,324 @@
+---
+import { siteConfig } from '../../site.config';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+  ogType?: string;
+  noindex?: boolean;
+  jsonLd?: object[];
+}
+
+const {
+  title,
+  description = siteConfig.description,
+  canonical,
+  ogType = 'website',
+  noindex = false,
+  jsonLd = [],
+} = Astro.props;
+
+// Ensure trailing slash for canonical consistency with sitemap
+const rawCanonical = canonical
+  ? `https://${siteConfig.domain}${canonical}`
+  : Astro.url.href;
+const canonicalUrl = rawCanonical.endsWith('/') ? rawCanonical : rawCanonical + '/';
+const ogImage = `https://${siteConfig.domain}/images/hero.webp`;
+---
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content={ogType} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:site_name" content={siteConfig.name} />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  <!-- Favicon & App Icons -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="theme-color" content="#1A237E" />
+
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700;800&family=Inconsolata:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- JSON-LD Structured Data -->
+  {jsonLd.map((schema) => (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  ))}
+</head>
+<body>
+  <!-- Header Navbar -->
+  <header id="main-nav">
+    <div class="container navbar-container">
+      <a href="/" class="logo">
+        <svg class="logo-icon sun-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="5" fill="currentColor" />
+          <line x1="12" y1="1" x2="12" y2="3" />
+          <line x1="12" y1="21" x2="12" y2="23" />
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+          <line x1="1" y1="12" x2="3" y2="12" />
+          <line x1="21" y1="12" x2="23" y2="12" />
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </svg>
+        <span>{siteConfig.domain}</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/">Startseite</a>
+        <a href="/ratgeber/">Ratgeber</a>
+        <a href="/heizung-solar/">Städte</a>
+        <a href="/#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="/#devis-form" class="nav-cta">
+          ⚡ Angebote vergleichen
+        </a>
+        <!-- Mobile hamburger -->
+        <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Navigationsmenü">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu" style="display: none; position: fixed; inset: 0; z-index: 100;">
+    <div id="mobile-menu-backdrop" style="position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);"></div>
+    <nav id="mobile-menu-panel" style="position: absolute; top: 0; right: 0; width: 280px; height: 100%; background: #1A237E; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; transform: translateX(100%); transition: transform 0.3s ease;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
+        <span style="color: white; font-family: 'Outfit', sans-serif; font-weight: 800;">Menü</span>
+        <button id="mobile-menu-close" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">&times;</button>
+      </div>
+      <a href="/" style="color: white; font-size: 1rem; font-weight: 600;">🏠 Startseite</a>
+      <a href="/ratgeber/" style="color: white; font-size: 1rem; font-weight: 600;">📚 Ratgeber</a>
+      <a href="/heizung-solar/" style="color: white; font-size: 1rem; font-weight: 600;">📍 Städte-Verzeichnis</a>
+      <a href="/#faq" style="color: white; font-size: 1rem; font-weight: 600;">❓ FAQ</a>
+      <a href="/#devis-form" id="mobile-menu-cta-btn" style="background: var(--combo-gradient); color: white; text-align: center; padding: 0.75rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.9rem; margin-top: 1rem;">⚡ Angebote vergleichen</a>
+    </nav>
+  </div>
+
+  <!-- Main content -->
+  <main style="flex: 1;">
+    <slot />
+  </main>
+
+  <!-- Mega Footer -->
+  <footer class="mega-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Col 1: About -->
+        <div class="footer-col">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="currentColor" style="width: 1.5rem; height: 1.5rem;">
+              <circle cx="12" cy="12" r="5" />
+              <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+            <span style="color: white; font-weight: 800; font-family: 'Outfit';">{siteConfig.name}</span>
+          </div>
+          <p>{siteConfig.tagline}</p>
+          <a href="/#devis-form" class="nav-cta" style="display: inline-block;">
+            ⚡ Angebote vergleichen
+          </a>
+        </div>
+
+        <!-- Col 2: Ratgeber -->
+        <div class="footer-col">
+          <h4>📚 Ratgeber</h4>
+          <ul>
+            <li><a href="/ratgeber/waermepumpe-photovoltaik-kombinieren-kosten-vorteile/">WP & PV Kombination</a></li>
+            <li><a href="/ratgeber/komplettpaket-pv-wp-was-kostet-die-energiewende-fuers-eigenheim/">Komplettpaket Kosten</a></li>
+            <li><a href="/ratgeber/eigenverbrauch-maximieren-so-nutzen-sie-ihren-solarstrom-optimal/">Eigenverbrauch steigern</a></li>
+            <li><a href="/ratgeber/pv-anlage-fuer-die-waermepumpe-dimensionieren-richtige-groesse-berechnen/">PV Dimensionierung</a></li>
+            <li><a href="/ratgeber/autarkie-mit-pv-waermepumpe-speicher-wie-unabhaengig-werden-sie/">Autarkie mit Speicher</a></li>
+            <li><a href="/ratgeber/foerderung-fuer-pv-und-waermepumpe-alle-zuschuesse-2026-im-ueberblick/">Zuschüsse 2026</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Städte -->
+        <div class="footer-col">
+          <h4>📍 Top-Städte</h4>
+          <ul>
+            <li><a href="/heizung-solar/berlin/">Berlin</a></li>
+            <li><a href="/heizung-solar/hamburg/">Hamburg</a></li>
+            <li><a href="/heizung-solar/munich/">München</a></li>
+            <li><a href="/heizung-solar/cologne/">Köln</a></li>
+            <li><a href="/heizung-solar/frankfurt-am-main/">Frankfurt</a></li>
+            <li><a href="/heizung-solar/stuttgart/">Stuttgart</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Rechtliches -->
+        <div class="footer-col">
+          <h4>⚖️ Rechtliches</h4>
+          <ul>
+            <li><a href="/impressum/">Impressum</a></li>
+            <li><a href="/datenschutz/">Datenschutz</a></li>
+            <li><a href="/kontakt/">Kontakt</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© {new Date().getFullYear()} {siteConfig.name} — Alle Rechte vorbehalten. Die Preisangaben dienen der Orientierung und sind unverbindlich.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Sticky Mobile CTA -->
+  <div id="sticky-cta" class="sticky-cta">
+    <a href="/#devis-form" class="cta-button cta-pv" style="display: block; width: 100%;">
+      ⚡ Angebote vergleichen (100% Kostenlos)
+    </a>
+  </div>
+
+  <!-- DSGVO Cookie Banner -->
+  <div id="cookie-consent-banner" class="cookie-banner">
+    <div class="cookie-content">
+      <span style="font-size: 1.5rem;">🍪</span>
+      <div class="cookie-text">
+        <h4>Cookie-Einstellungen</h4>
+        <p>Wir nutzen Cookies, um unsere Website zu optimieren und unser Angebot für Sie stetig zu verbessern. Detaillierte Infos finden Sie in der <a href="/datenschutz/" style="text-decoration: underline;">Datenschutzerklärung</a>.</p>
+        <div class="cookie-actions">
+          <button id="cookie-accept" class="cookie-btn-accept">Akzeptieren</button>
+          <button id="cookie-decline" class="cookie-btn-decline">Ablehnen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+  (function() {
+    // Navbar scroll effect
+    var nav = document.getElementById('main-nav');
+    if (nav) {
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+          nav.classList.add('navbar-scrolled');
+        } else {
+          nav.classList.remove('navbar-scrolled');
+        }
+      }, { passive: true });
+    }
+
+    // Mobile Menu
+    var menuBtn = document.getElementById('mobile-menu-btn');
+    var menuOverlay = document.getElementById('mobile-menu');
+    var menuPanel = document.getElementById('mobile-menu-panel');
+    var menuClose = document.getElementById('mobile-menu-close');
+    var menuBackdrop = document.getElementById('mobile-menu-backdrop');
+    var menuCta = document.getElementById('mobile-menu-cta-btn');
+
+    function openMenu() {
+      menuOverlay.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      setTimeout(function() {
+        menuPanel.style.transform = 'translateX(0)';
+      }, 50);
+    }
+
+    function closeMenu() {
+      menuPanel.style.transform = 'translateX(100%)';
+      document.body.style.overflow = '';
+      setTimeout(function() {
+        menuOverlay.style.display = 'none';
+      }, 300);
+    }
+
+    if (menuBtn) menuBtn.addEventListener('click', openMenu);
+    if (menuClose) menuClose.addEventListener('click', closeMenu);
+    if (menuBackdrop) menuBackdrop.addEventListener('click', closeMenu);
+    if (menuCta) menuCta.addEventListener('click', closeMenu);
+
+    // Sticky CTA scroll logic
+    var stickyCta = document.getElementById('sticky-cta');
+    if (stickyCta) {
+      if (window.location.pathname === '/kontakt' || window.location.pathname === '/kontakt/') {
+        stickyCta.style.display = 'none';
+      } else {
+        var scrolledPastHero = false;
+        var formVisible = false;
+
+        function updateStickyCTA() {
+          if (scrolledPastHero && !formVisible) {
+            stickyCta.style.display = 'block';
+            setTimeout(function() {
+              stickyCta.style.transform = 'translateY(0)';
+            }, 10);
+          } else {
+            stickyCta.style.transform = 'translateY(100%)';
+            setTimeout(function() {
+              if (!scrolledPastHero || formVisible) {
+                stickyCta.style.display = 'none';
+              }
+            }, 300);
+          }
+        }
+
+        window.addEventListener('scroll', function() {
+          scrolledPastHero = window.scrollY > 400;
+          updateStickyCTA();
+        }, { passive: true });
+
+        var devisForm = document.getElementById('devis-form');
+        if (devisForm && 'IntersectionObserver' in window) {
+          var observer = new IntersectionObserver(function(entries) {
+            formVisible = entries[0].isIntersecting;
+            updateStickyCTA();
+          }, { threshold: 0.1 });
+          observer.observe(devisForm);
+        }
+      }
+    }
+
+    // Cookie Banner
+    var banner = document.getElementById('cookie-consent-banner');
+    var accept = document.getElementById('cookie-accept');
+    var decline = document.getElementById('cookie-decline');
+
+    if (banner && accept && decline) {
+      var consent = localStorage.getItem('cookie-consent');
+      if (!consent) {
+        setTimeout(function() {
+          banner.style.display = 'block';
+        }, 1000);
+      }
+
+      accept.addEventListener('click', function() {
+        localStorage.setItem('cookie-consent', 'accepted');
+        banner.style.display = 'none';
+      });
+
+      decline.addEventListener('click', function() {
+        localStorage.setItem('cookie-consent', 'declined');
+        banner.style.display = 'none';
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

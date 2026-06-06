@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../../site.config';
+---
+
+<BaseLayout title={`Kontakt | ${siteConfig.name}`} canonical="/kontakt">
+  <div style="background: var(--primary); color: white; padding: 4rem 0 2rem 0; text-align: center; margin-bottom: 3rem;">
+    <div class="container">
+      <h1 style="color: white; font-size: 2.25rem;">Kontakt</h1>
+      <p style="color: rgba(255,255,255,0.8); margin-top: 0.5rem;">Haben Sie Fragen? Wir helfen Ihnen gerne weiter.</p>
+    </div>
+  </div>
+
+  <div class="container" style="max-width: 800px; margin-bottom: 5rem;">
+    <div class="grid grid-cols-2 gap: 2rem; margin-bottom: 3rem;">
+      <div class="card" style="padding: 2rem;">
+        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--primary);">📍 Anschrift</h3>
+        <p style="font-size: 0.95rem; color: var(--text-light); line-height: 1.6;">
+          Heizung & Solar Kosten Online-Portal<br />
+          Musterstraße 45<br />
+          10115 Berlin<br />
+          Deutschland
+        </p>
+      </div>
+      <div class="card" style="padding: 2rem;">
+        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--primary);">✉️ Direktkontakt</h3>
+        <p style="font-size: 0.95rem; color: var(--text-light); line-height: 1.6;">
+          E-Mail: <a href="mailto:kontakt@heizung-solar-kosten.de" style="color: var(--secondary); text-decoration: underline;">kontakt@heizung-solar-kosten.de</a><br />
+          Telefon: +49 (0) 30 12345678 (Mo-Fr, 09:00 - 17:00)
+        </p>
+      </div>
+    </div>
+
+    <div class="card" style="padding: 2.5rem;">
+      <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; text-align: center;">Schreiben Sie uns eine Nachricht</h2>
+      
+      <form id="contact-form" style="display: flex; flex-direction: column; gap: 1rem;">
+        <div class="grid-2col-fields">
+          <div class="form-input-group">
+            <label>Name</label>
+            <input type="text" name="name" required placeholder="Ihr Name" class="form-text-input" />
+          </div>
+          <div class="form-input-group">
+            <label>E-Mail-Adresse</label>
+            <input type="email" name="email" required placeholder="name@beispiel.de" class="form-text-input" />
+          </div>
+        </div>
+        
+        <div class="form-input-group">
+          <label>Betreff</label>
+          <input type="text" name="subject" required placeholder="Betreff Ihrer Nachricht" class="form-text-input" />
+        </div>
+        
+        <div class="form-input-group">
+          <label>Ihre Nachricht</label>
+          <textarea name="message" required rows="6" placeholder="Wie können wir Ihnen helfen?" class="form-text-input" style="resize: vertical; font-family: inherit;"></textarea>
+        </div>
+
+        <button type="submit" class="form-submit-btn" style="margin-top: 0.5rem;">
+          ✉️ Nachricht absenden
+        </button>
+      </form>
+      
+      <div id="contact-success" style="display: none; text-align: center; padding: 2rem 0;">
+        <span style="font-size: 2.5rem; display: block; margin-bottom: 1rem;">✅</span>
+        <h4 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--success);">Nachricht erfolgreich gesendet!</h4>
+        <p style="font-size: 0.9rem; color: var(--text-light);">Vielen Dank für Ihre Anfrage. Wir werden uns innerhalb von 24 Stunden bei Ihnen melden.</p>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function() {
+      var form = document.getElementById('contact-form');
+      var success = document.getElementById('contact-success');
+      if (form && success) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          form.style.display = 'none';
+          success.style.display = 'block';
+        });
+      }
+    })();
+  </script>
+</BaseLayout>

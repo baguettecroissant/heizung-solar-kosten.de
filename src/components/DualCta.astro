@@ -1,0 +1,31 @@
+---
+import { siteConfig } from '../../site.config';
+
+interface Props {
+  city?: string;
+}
+
+const { city = '' } = Astro.props;
+const pvLink = siteConfig.taptaphome.pv.trackingLink;
+const hpLink = siteConfig.taptaphome.hp.trackingLink;
+---
+
+<section class="dual-cta-section">
+  <div class="dual-cta-grid">
+    <div class="cta-card cta-solar">
+      <h3>☀️ Solaranlage{city ? ` in ${city}` : ''}</h3>
+      <p>Vergleichen Sie kostenlose Angebote für Ihre Photovoltaikanlage und senken Sie Ihre Stromkosten um bis zu 80%.</p>
+      <a href={pvLink} target="_blank" rel="nofollow sponsored" class="cta-button cta-pv">
+        Solar-Angebote →
+      </a>
+    </div>
+    <div class="cta-card cta-heat">
+      <h3>🔥 Wärmepumpe{city ? ` in ${city}` : ''}</h3>
+      <p>Vergleichen Sie kostenlose Angebote für Ihre neue Heizung und sichern Sie sich bis zu 70% staatliche Förderung.</p>
+      <a href={hpLink} target="_blank" rel="nofollow sponsored" class="cta-button cta-hp">
+        Wärmepumpe-Angebote →
+      </a>
+    </div>
+  </div>
+  <span class="cta-note">✓ Beide kostenlos & unverbindlich ✓ Unabhängige Fachbetriebe ✓ In 2 Minuten ausgefüllt</span>
+</section>

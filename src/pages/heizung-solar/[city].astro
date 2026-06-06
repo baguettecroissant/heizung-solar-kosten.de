@@ -1,0 +1,305 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import DualCta from '../../components/DualCta.astro';
+import { getAllCities, getNearbyCities } from '../../lib/cities';
+import { siteConfig } from '../../../site.config';
+import localContentRaw from '../../data/local-content-de.json';
+
+export function getStaticPaths() {
+  const cities = getAllCities();
+  return cities.map((c) => ({
+    params: { city: c.slug },
+    props: { cityData: c },
+  }));
+}
+
+const { cityData } = Astro.props;
+if (!cityData) {
+  return Astro.redirect('/404');
+}
+
+const localContent = (localContentRaw as Record<string, any>)[cityData.slug];
+if (!localContent) {
+  return Astro.redirect('/404');
+}
+
+const nearby = getNearbyCities(cityData, 10);
+
+// Multipliers & regional pricing for display
+let multiplier = 1.0;
+if (cityData.region === 'south') multiplier = 1.05;
+else if (cityData.region === 'north') multiplier = 0.95;
+else if (cityData.region === 'east') multiplier = 0.90;
+
+const seed = cityData.slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+const priceMinPackage = Math.round((39000 + (seed % 2500)) * multiplier / 100) * 100;
+const priceMaxPackage = Math.round((54000 + (seed % 3500)) * multiplier / 100) * 100;
+
+// Dynamic title, meta title, meta desc patterns
+const pageTitle = `Heizung & Solar Kosten in ${cityData.name} — Wärmepumpe + Photovoltaik ${cityData.zip}`;
+const metaTitle = `Heizung & Solar Kosten ${cityData.name} | Wärmepumpe + PV 2026`;
+const metaDesc = `Heizung und Solar kombinieren in ${cityData.name}: Wärmepumpe + Photovoltaik ab ${priceMinPackage.toLocaleString('de-DE')}€. Bis zu 50% Energiekosten sparen. Kostenlose Angebote vergleichen.`;
+
+// Setup local schema
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": pageTitle,
+    "description": metaDesc,
+    "url": `https://${siteConfig.domain}/heizung-solar/${cityData.slug}/`,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": localContent.faq_local.question,
+        "acceptedAnswer": { "@type": "Answer", "text": localContent.faq_local.answer }
+      },
+      ...siteConfig.faq.slice(0, 3).map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={metaTitle}
+  description={metaDesc}
+  canonical={`/heizung-solar/${cityData.slug}`}
+  jsonLd={jsonLd}
+>
+  <!-- Hero Section -->
+  <section class="hero-section" style="--hero-bg: url('/images/hero.webp');">
+    <div class="container">
+      <div class="grid grid-cols-2" style="align-items: center; gap: 3rem;">
+        <div>
+          <span class="hero-badge">⚡ Wärmepumpe + Photovoltaik kombinieren</span>
+          <h1 class="hero-title">
+            Heizung & Solar Kosten in <span style="color: var(--accent);">{cityData.name}</span>
+          </h1>
+          <p class="hero-subtitle">
+            {localContent.intro}
+          </p>
+          <div class="hero-trust-grid">
+            {siteConfig.trustBadges.map((badge) => (
+              <span class="hero-trust-badge">✓ {badge}</span>
+            ))}
+          </div>
+        </div>
+        <div>
+          <LeadForm defaultZip={cityData.zip} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Local Tip & Market Overview -->
+  <section style="padding: 4rem 0 2rem 0; background-color: #FFFFFF;">
+    <div class="container">
+      <h2 class="section-title">📊 Marktdaten & Solarpotenzial für {cityData.name}</h2>
+      <p class="section-desc">Aktuelle Marktlage für Photovoltaik-Anlagen und Wärmepumpen-Installationen im Großraum {cityData.name}.</p>
+      
+      <div class="grid grid-cols-2" style="gap: 2rem; margin-bottom: 2rem;">
+        <!-- Left: Local Market description -->
+        <div class="card" style="padding: 2rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 1rem;">🏷️ Investitionskosten & Förderung</h3>
+            <p style="font-size: 0.95rem; color: var(--text); line-height: 1.7; margin-bottom: 1.5rem;">
+              {localContent.market_data}
+            </p>
+          </div>
+          <div class="info-card" style="margin-top: 0; background-color: #FFF9F2; border-left-color: var(--solar-color);">
+            <h4 style="color: var(--solar-color); font-size: 1rem;">💡 Behörden-Tipp für {cityData.name}</h4>
+            <p style="font-size: 0.85rem; color: var(--text); line-height: 1.6;" set:html={localContent.local_tip} />
+          </div>
+        </div>
+
+        <!-- Right: Sonnenpotenzial description -->
+        <div class="card" style="padding: 2rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 1rem;">☀️ Solare Einstrahlung & Stromertrag</h3>
+            <p style="font-size: 0.95rem; color: var(--text); line-height: 1.7; margin-bottom: 1.5rem;">
+              {localContent.sonnenpotenzial}
+            </p>
+          </div>
+          <div class="info-card" style="margin-top: 0;">
+            <h4 style="font-size: 1rem;">⚡ Synergie PV + WP in {cityData.bundesland}</h4>
+            <p style="font-size: 0.85rem; color: var(--text); line-height: 1.6;">
+              Da Wärmepumpen vor allem in der Übergangszeit und im Winter heizen, erhöht eine Ost-West- oder Süd-PV-Ausrichtung den direkten Eigenverbrauch der Wärmepumpe spürbar. Stromspeicher maximieren diesen Effekt.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Geolocation Map Section -->
+      <div class="card" style="padding: 1.5rem; margin-top: 1.5rem;">
+        <h3 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 1rem; text-align: center;">📍 Geografischer Einsatzbereich in {cityData.name}</h3>
+        <div class="map-container" style="position: relative; width: 100%; height: 350px; border-radius: 0.75rem; overflow: hidden; border: 1px solid var(--card-border);">
+          <iframe 
+            width="100%" 
+            height="100%" 
+            frameborder="0" 
+            scrolling="no" 
+            marginheight="0" 
+            marginwidth="0" 
+            src={`https://www.openstreetmap.org/export/embed.html?bbox=${parseFloat(cityData.lng)-0.03}%2C${parseFloat(cityData.lat)-0.02}%2C${parseFloat(cityData.lng)+0.03}%2C${parseFloat(cityData.lat)+0.02}&layer=mapnik&marker=${parseFloat(cityData.lat)}%2C${parseFloat(cityData.lng)}`}
+            style="border: 0;"
+            title={`Geografische Karte von ${cityData.name}`}
+          ></iframe>
+        </div>
+        <small style="display: block; margin-top: 0.5rem; color: var(--text-light); text-align: center;">
+          Die Karte zeigt das Stadtgebiet von <strong>{cityData.name}</strong> ({cityData.zip}) im Bundesland {cityData.bundesland}, in dem unsere Partner-Fachbetriebe Installationen durchführen.
+        </small>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Tables & Autarky -->
+  <section style="padding: 4rem 0; background-color: var(--bg);">
+    <div class="container">
+      <h2 class="section-title">💰 Preise & Wirtschaftlichkeit der Kombination</h2>
+      <p class="section-desc">Die durchschnittlichen Paketkosten und Einsparpotenziale im Vergleich zu Gaskesseln und Einzellösungen.</p>
+
+      <div class="grid grid-cols-2" style="gap: 2rem; margin-bottom: 3rem;">
+        <!-- Pricing Table -->
+        <div class="table-wrapper">
+          <table class="cost-table">
+            <thead>
+              <tr>
+                <th>Systemkomponente</th>
+                <th>Einzelkauf</th>
+                <th>Im Paketpreis</th>
+              </tr>
+            </thead>
+            <tbody>
+              {siteConfig.pricing.table.map((row) => (
+                <tr>
+                  <td>{row.component}</td>
+                  <td>{row.individual}</td>
+                  <td>{row.packet}</td>
+                </tr>
+              ))}
+              <tr class="total-row">
+                <td>Gesamtkosten (vor Förderung)</td>
+                <td>{siteConfig.pricing.individualTotal}</td>
+                <td>{siteConfig.pricing.packetTotal}</td>
+              </tr>
+              <tr class="total-row" style="background-color: #ECFDF5;">
+                <td style="color: var(--success);">Förderungszuschuss (WP + PV-Vorteil)</td>
+                <td colspan="2" style="color: var(--success); text-align: center;">Bis zu -21.000 € gespart</td>
+              </tr>
+              <tr class="total-row" style="background-color: var(--primary-light);">
+                <td>Tatsächlicher Eigenanteil (Netto)</td>
+                <td colspan="2" style="text-align: center; color: var(--primary);">{siteConfig.pricing.netTotal}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Autarky Grid & Amortisation -->
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <div class="card" style="padding: 1.75rem; border-left: 4px solid var(--solar-color);">
+            <h3 style="font-size: 1.15rem; color: var(--primary); margin-bottom: 0.5rem; font-weight: 850;">⏱️ Wirtschaftliche Amortisationszeit</h3>
+            <p style="font-size: 0.9rem; color: var(--text); line-height: 1.6;">
+              Basierend auf den klimatischen Werten von {cityData.name} amortisiert sich das Komplettpaket (10 kWp PV + 10 kWh Speicher + WP) bereits in ca. <strong style="color: var(--solar-color); font-size: 1.1rem;">{localContent.payback_years} Jahren</strong>. Nach dieser Zeit heizen und stromversorgen Sie Ihr Gebäude für über ein Jahrzehnt nahezu kostenfrei.
+            </p>
+          </div>
+          
+          <div class="card" style="padding: 1.75rem;">
+            <h3 style="font-size: 1.15rem; color: var(--primary); margin-bottom: 0.75rem; font-weight: 800;">🔋 Autarkiegrad im Vergleich</h3>
+            <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+              {siteConfig.autarky.map((item) => (
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding-bottom: 0.4rem;">
+                  <span style="font-size: 0.85rem; font-weight: 600; color: var(--text);">{item.system}</span>
+                  <span class="font-data" style="font-size: 0.9rem; font-weight: 700; color: var(--solar-color);">{item.rate}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dual CTAs -->
+  <div class="container">
+    <DualCta city={cityData.name} />
+  </div>
+
+  <!-- FAQ Section with Local Question -->
+  <section style="padding: 4rem 0; background-color: #FFFFFF;" id="faq">
+    <div class="container">
+      <div class="faq-container">
+        <h2 class="section-title">❓ Häufig gestellte Fragen in {cityData.name}</h2>
+        <p class="section-desc">Die wichtigsten Fragen zum Solar-Heizungs-Kombipaket, speziell beantwortet für Ihre Region.</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <!-- Local FAQ Item -->
+          <details class="faq-item" open>
+            <summary style="border-left: 4px solid var(--solar-color); padding-left: 1.25rem;">
+              <span>{localContent.faq_local.question}</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-answer">
+              <p set:html={localContent.faq_local.answer}></p>
+            </div>
+          </details>
+
+          <!-- General FAQ Items -->
+          {siteConfig.faq.map((item) => (
+            <details class="faq-item">
+              <summary>
+                <span>{item.q}</span>
+                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </summary>
+              <div class="faq-answer">
+                <p>{item.a}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nearby Regions -->
+  <section style="padding: 4rem 0; background-color: var(--bg);">
+    <div class="container">
+      <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--primary); text-align: center; margin-bottom: 2rem;">
+        📍 Solar- & Wärmepumpen-Angebote in der Region {cityData.name} vergleichen
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.75rem;">
+        {nearby.map((nc) => (
+          <a
+            href={`/heizung-solar/${nc.slug}/`}
+            style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 0.75rem; padding: 1rem; text-align: center; text-decoration: none; font-weight: 600; color: var(--text); transition: var(--transition-fast);"
+            class="nearby-link"
+          >
+            <span style="display: block; font-size: 0.9rem; color: var(--primary);">{nc.name}</span>
+            <span style="display: block; font-size: 0.75rem; color: var(--text-light); margin-top: 0.25rem;">PLZ {nc.zip}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .nearby-link:hover {
+      border-color: var(--solar-color);
+      color: var(--solar-color) !important;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+  </style>
+</BaseLayout>
