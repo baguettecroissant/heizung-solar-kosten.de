@@ -24,6 +24,7 @@ export const siteConfig = {
 
   // === MONETARISIERUNG (TAP TAP HOME DUAL) ===
   taptaphome: {
+    mode: 'api' as 'redirect' | 'iframe' | 'api',
     partnerName: "DAA GmbH (BOSCH-Gruppe)",
     contactPerson: "Tuuli Himme (tuuli.himme@taptaphome.com)",
     

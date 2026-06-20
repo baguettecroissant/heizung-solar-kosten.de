@@ -268,35 +268,108 @@ const { defaultZip = '' } = Astro.props;
       var prev = getPrevStep(currentStep);
       showStep(prev);
     });
-
     // Form submit
     var form = document.getElementById('lead-wizard-form');
     if (form) {
       form.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // Hide all panels, show success
-        var panes = wizard.querySelectorAll('.step-pane');
-        panes.forEach(function(pane) { pane.classList.remove('active'); pane.classList.add('hidden'); });
-        successPane.classList.add('active');
-        successPane.classList.remove('hidden');
-        formFooter.style.display = 'none';
+        var mode = siteConfig.taptaphome.mode || 'api';
 
-        var pvLink = siteConfig.taptaphome.pv.trackingLink;
-        var hpLink = siteConfig.taptaphome.hp.trackingLink;
+        if (mode === 'redirect') {
+          // Hide all panels, show success
+          var panes = wizard.querySelectorAll('.step-pane');
+          panes.forEach(function(pane) { pane.classList.remove('active'); pane.classList.add('hidden'); });
+          successPane.classList.add('active');
+          successPane.classList.remove('hidden');
+          formFooter.style.display = 'none';
 
-        // Perform redirects based on selected campaign type
-        setTimeout(function() {
-          if (requestType === 'pv') {
-            window.location.href = pvLink;
-          } else if (requestType === 'hp') {
-            window.location.href = hpLink;
-          } else if (requestType === 'combo') {
-            // Double Monetization: open PV link in a new tab, redirect main tab to HP link
-            window.open(pvLink, '_blank');
-            window.location.href = hpLink;
+          var pvLink = siteConfig.taptaphome.pv.trackingLink;
+          var hpLink = siteConfig.taptaphome.hp.trackingLink;
+
+          setTimeout(function() {
+            if (requestType === 'pv') {
+              window.location.href = pvLink;
+            } else if (requestType === 'hp') {
+              window.location.href = hpLink;
+            } else if (requestType === 'combo') {
+              window.open(pvLink, '_blank');
+              window.location.href = hpLink;
+            }
+          }, 1500);
+        } else if (mode === 'api') {
+          var submitBtn = form.querySelector('.form-submit-btn');
+          var originalBtnText = submitBtn ? submitBtn.innerText : '';
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Wird gesendet...';
           }
-        }, 1500);
+
+          var job_details_pv = {
+            eigentumsverhaeltnisse: "Eigner / Entscheidungsbefugt",
+            objekt: "Einfamilienhaus",
+            dacheindeckung: "Dachziegel",
+            stromverbrauch: "3.500-4.500 kWh",
+            zeitpunkt_projektbegin: "In den nächsten 3 Monaten",
+            stromspeicher: "Weiß nicht / Beratung erwünscht"
+          };
+
+          var job_details_hp = {
+            eigentumsverhaeltnisse: "Eigner / Entscheidungsbefugt",
+            objekt: "Einfamilienhaus",
+            heizflaeche: 150,
+            heat_pump_type: "Luft-Wasser-Wärmepumpe",
+            heating_room_location: "Hauswirtschaftsraum",
+            zeitpunkt_projektbegin: "In den nächsten 3 Monaten"
+          };
+
+          // Form data collection
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+
+          var payload = {
+            firstname: data.firstname,
+            lastname: data.lastname,
+            email: data.email,
+            phone: data.phone,
+            zip: data.zip,
+            niche: requestType, // 'combo', 'pv', or 'hp'
+            domain: siteConfig.domain,
+            job_details_pv: job_details_pv,
+            job_details_hp: job_details_hp,
+            pageUrl: window.location.href
+          };
+
+          fetch('/api/lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          })
+          .then(res => res.json())
+          .then(resData => {
+            if (resData.success) {
+              var panes = wizard.querySelectorAll('.step-pane');
+              panes.forEach(function(pane) { pane.classList.remove('active'); pane.classList.add('hidden'); });
+              successPane.classList.add('active');
+              successPane.classList.remove('hidden');
+              formFooter.style.display = 'none';
+            } else {
+              alert('Fehler bei der Übermittlung: ' + (resData.errors ? resData.errors.join(', ') : 'Bitte überprüfen Sie Ihre Eingaben.'));
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+              }
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            alert('Ein Netzwerkfehler ist aufgetreten. Bitte versuchen Sie es erneut.');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerText = originalBtnText;
+            }
+          });
+        }
       });
     }
   })();
