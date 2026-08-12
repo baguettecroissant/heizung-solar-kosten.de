@@ -20,7 +20,7 @@ const { defaultZip = '' } = Astro.props;
     
     <!-- Step 1: Request Type -->
     <div class="step-pane active" data-step="1">
-      <span class="step-tag">Schritt 1 von 8</span>
+      <span class="step-tag">Schritt 1 von 10</span>
       <h4>Was möchten Sie anfragen?</h4>
       <div class="form-btn-list">
         <button type="button" class="form-select-btn" data-next="true" data-value="combo">☀️ Solarstrom + 🔥 Wärmepumpe (Kombipaket)</button>
@@ -31,28 +31,28 @@ const { defaultZip = '' } = Astro.props;
 
     <!-- Step 2: Ownership -->
     <div class="step-pane" data-step="2">
-      <span class="step-tag">Schritt 2 von 8</span>
+      <span class="step-tag">Schritt 2 von 10</span>
       <h4>Sind Sie Eigentümer der Immobilie?</h4>
       <div class="form-btn-list">
-        <button type="button" class="form-select-btn" data-next="true">Ja, ich bin Eigentümer</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="eigentumsverhaeltnisse" data-detail-value="Eigner / Entscheidungsbefugt">Ja, ich bin Eigentümer</button>
         <button type="button" class="form-select-btn" data-disqualify="owner">Nein, ich bin Mieter</button>
       </div>
     </div>
 
     <!-- Step 3: Building Type -->
     <div class="step-pane" data-step="3">
-      <span class="step-tag">Schritt 3 von 8</span>
+      <span class="step-tag">Schritt 3 von 10</span>
       <h4>Um welche Gebäudeart handelt es sich?</h4>
       <div class="form-btn-list">
-        <button type="button" class="form-select-btn" data-next="true">Einfamilienhaus</button>
-        <button type="button" class="form-select-btn" data-next="true">Zweifamilienhaus</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="objekt" data-detail-value="Einfamilienhaus">Einfamilienhaus</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="objekt" data-detail-value="Zweifamilienhaus">Zweifamilienhaus</button>
         <button type="button" class="form-select-btn" data-disqualify="property">Mehrfamilienhaus / Gewerbe</button>
       </div>
     </div>
 
     <!-- Step 4: Roof Size (Solar/Combo only) -->
     <div class="step-pane" data-step="4">
-      <span class="step-tag">Schritt 4 von 8</span>
+      <span class="step-tag">Schritt 4 von 10</span>
       <h4>Wie groß ist die nutzbare Dachfläche ungefähr?</h4>
       <div class="form-btn-list">
         <button type="button" class="form-select-btn" data-next="true">Mehr als 20 m²</button>
@@ -62,17 +62,38 @@ const { defaultZip = '' } = Astro.props;
 
     <!-- Step 5: Roof Material (Solar/Combo only) -->
     <div class="step-pane" data-step="5">
-      <span class="step-tag">Schritt 5 von 8</span>
+      <span class="step-tag">Schritt 5 von 10</span>
       <h4>Welche Dachdeckung liegt vor?</h4>
       <div class="form-btn-list">
-        <button type="button" class="form-select-btn" data-next="true">Ziegel / Beton / Metall / Flachdach</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="dacheindeckung" data-detail-value="Dachziegel">Dachziegel</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="dacheindeckung" data-detail-value="Blech">Blech</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="dacheindeckung" data-detail-value="Dachpappe / Bitumen">Dachpappe / Bitumen</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="dacheindeckung" data-detail-value="Folie">Folie</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="dacheindeckung" data-detail-value="Wellplatten">Wellplatten</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="dacheindeckung" data-detail-value="Biberschwanzziegel">Biberschwanzziegel</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="dacheindeckung" data-detail-value="Begrüntes Dach">Begrüntes Dach</button>
         <button type="button" class="form-select-btn" data-disqualify="asbestos">Schiefer / Asbest</button>
       </div>
     </div>
 
-    <!-- Step 6: Heating Area (Heatpump/Combo only) -->
+    <!-- Step 6: Electricity consumption (Solar/Combo only) -->
     <div class="step-pane" data-step="6">
-      <span class="step-tag">Schritt 6 von 8</span>
+      <span class="step-tag">Schritt 6 von 10</span>
+      <h4>Wie hoch ist Ihr jährlicher Stromverbrauch?</h4>
+      <div class="form-btn-list">
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="stromverbrauch" data-detail-value="1.500-2.500 kWh">1.500-2.500 kWh</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="stromverbrauch" data-detail-value="2.500-3.500 kWh">2.500-3.500 kWh</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="stromverbrauch" data-detail-value="3.500-4.500 kWh">3.500-4.500 kWh</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="stromverbrauch" data-detail-value="über 4.500 kWh">über 4.500 kWh</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="stromverbrauch" data-detail-value="über 7.500 kWh">über 7.500 kWh</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="stromverbrauch" data-detail-value="über 10.000 kWh">über 10.000 kWh</button>
+        <button type="button" class="form-select-btn" data-disqualify="consumption">Weniger als 1.500 kWh</button>
+      </div>
+    </div>
+
+    <!-- Step 7: Heating Area (Heatpump/Combo only) -->
+    <div class="step-pane" data-step="7">
+      <span class="step-tag">Schritt 7 von 10</span>
       <h4>Wie groß ist die zu beheizende Wohnfläche?</h4>
       <div class="form-btn-list">
         <button type="button" class="form-select-btn" data-next="true">Zwischen 80 m² und 250 m²</button>
@@ -80,52 +101,70 @@ const { defaultZip = '' } = Astro.props;
       </div>
     </div>
 
-    <!-- Step 7: Timing -->
-    <div class="step-pane" data-step="7">
-      <span class="step-tag">Schritt 7 von 8</span>
+    <!-- Step 8: Heat pump type (Heatpump/Combo only) -->
+    <div class="step-pane" data-step="8">
+      <span class="step-tag">Schritt 8 von 10</span>
+      <h4>Welchen Wärmepumpen-Typ wünschen Sie?</h4>
+      <div class="form-btn-list">
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="heat_pump_type" data-detail-value="Luft-Wasser-Wärmepumpe">Luft-Wasser-Wärmepumpe</button>
+        <button type="button" class="form-select-btn" data-disqualify="heat_pump_type">Sole-Wasser-Wärmepumpe (Erdwärme)</button>
+        <button type="button" class="form-select-btn" data-disqualify="heat_pump_type">Wasser-Wasser-Wärmepumpe (Grundwasser)</button>
+        <button type="button" class="form-select-btn" data-disqualify="heat_pump_type">Luft-Luft-Wärmepumpe</button>
+      </div>
+    </div>
+
+    <!-- Step 9: Installation location (Heatpump/Combo only) -->
+    <div class="step-pane" data-step="9">
+      <span class="step-tag">Schritt 9 von 10</span>
+      <h4>Wo soll die Wärmepumpe aufgestellt werden?</h4>
+      <div class="form-btn-list">
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="heating_room_location" data-detail-value="Keller">Keller</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="heating_room_location" data-detail-value="Wohnraum">Wohnraum</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="heating_room_location" data-detail-value="Hauswirtschaftsraum">Hauswirtschaftsraum</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="heating_room_location" data-detail-value="Anderer Standort">Anderer Standort</button>
+        <button type="button" class="form-select-btn" data-disqualify="location">Dachgeschoss</button>
+      </div>
+    </div>
+
+    <!-- Step 10: Timing -->
+    <div class="step-pane" data-step="10">
+      <span class="step-tag">Schritt 10 von 10</span>
       <h4>Wann soll das Projekt umgesetzt werden?</h4>
       <div class="form-btn-list">
-        <button type="button" class="form-select-btn" data-next="true">In den nächsten 6 Monaten</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="zeitpunkt_projektbegin" data-detail-value="Umgehend">Umgehend</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="zeitpunkt_projektbegin" data-detail-value="In den nächsten 3 Monaten">In den nächsten 3 Monaten</button>
+        <button type="button" class="form-select-btn" data-next="true" data-detail-key="zeitpunkt_projektbegin" data-detail-value="In 3 bis 6 Monaten">In 3 bis 6 Monaten</button>
         <button type="button" class="form-select-btn" data-disqualify="timing">Später als 6 Monate</button>
       </div>
     </div>
 
-    <!-- Step 8: Contact Details -->
-    <div class="step-pane" data-step="8">
+    <!-- Step 11: Contact Details -->
+    <div class="step-pane" data-step="11">
       <span class="step-tag">Letzter Schritt</span>
       <h4>Angebote kostenlos anfordern</h4>
-      
       <form id="lead-wizard-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" />
         <div class="form-input-group">
           <label>Postleitzahl</label>
           <input type="text" name="zip" required pattern="[0-9]{5}" placeholder="z.B. 10115" value={defaultZip} class="form-text-input" />
         </div>
         <div class="grid-2col-fields">
-          <div class="form-input-group">
-            <label>Vorname</label>
-            <input type="text" name="firstname" required placeholder="Vorname" class="form-text-input" />
-          </div>
-          <div class="form-input-group">
-            <label>Nachname</label>
-            <input type="text" name="lastname" required placeholder="Nachname" class="form-text-input" />
-          </div>
+          <div class="form-input-group"><label>Vorname</label><input type="text" name="firstname" required maxlength="120" autocomplete="given-name" placeholder="Vorname" class="form-text-input" /></div>
+          <div class="form-input-group"><label>Nachname</label><input type="text" name="lastname" required maxlength="120" autocomplete="family-name" placeholder="Nachname" class="form-text-input" /></div>
         </div>
-        <div class="form-input-group">
-          <label>E-Mail-Adresse</label>
-          <input type="email" name="email" required placeholder="name@beispiel.de" class="form-text-input" />
+        <div class="form-input-group"><label>E-Mail-Adresse</label><input type="email" name="email" required maxlength="254" autocomplete="email" placeholder="name@beispiel.de" class="form-text-input" /></div>
+        <div class="form-input-group"><label>Telefonnummer</label><input type="tel" name="phone" required maxlength="40" autocomplete="tel" placeholder="z.B. 0170 1234567" class="form-text-input" /></div>
+        <div class="form-input-group"><label>Straße und Hausnummer</label><input type="text" name="street" required maxlength="200" autocomplete="street-address" placeholder="Musterstraße 12" class="form-text-input" /></div>
+        <div class="grid-2col-fields">
+          <div class="form-input-group"><label>Ort</label><input type="text" name="city" required maxlength="120" autocomplete="address-level2" placeholder="Ort" class="form-text-input" /></div>
+          <div class="form-input-group project-field" data-project="pv"><label>Dachfläche (m²)</label><input type="number" name="dachflaeche" min="20" max="10000" step="1" inputmode="numeric" class="form-text-input" /></div>
         </div>
-        <div class="form-input-group">
-          <label>Telefonnummer</label>
-          <input type="tel" name="phone" required placeholder="z.B. 0170 1234567" class="form-text-input" />
-        </div>
-        
-        <div class="form-legal-note">
-          Mit dem Absenden willigen Sie ein, dass Ihre Daten zur kostenlosen Angebotserstellung an {siteConfig.taptaphome.partnerName} übermittelt und verarbeitet werden.
-        </div>
-
-        <button type="submit" class="form-submit-btn">
-          ⚡ Jetzt Angebote anfordern →
-        </button>
+        <div class="form-input-group project-field" data-project="hp"><label>Beheizte Wohnfläche (m²)</label><input type="number" name="heizflaeche" min="80" max="250" step="1" inputmode="numeric" class="form-text-input" /></div>
+        <label class="form-legal-note" style="display:flex;align-items:flex-start;gap:0.5rem;text-align:left;">
+          <input type="checkbox" name="consent" required style="margin-top:0.15rem;" />
+          <span>Ich willige ein, dass meine Angaben zur Bearbeitung meiner Angebotsanfrage an <strong>TapTapHome (DAA GmbH)</strong> übermittelt werden. Ich habe die <a href="/datenschutz" target="_blank" rel="noopener noreferrer">Datenschutzhinweise</a> und die <a href="https://www.taptaphome.com/de/agb-nutzer" target="_blank" rel="noopener noreferrer">AGB für Anfragesteller:innen</a> gelesen.</span>
+        </label>
+        <button type="submit" class="form-submit-btn">⚡ Jetzt Angebote anfordern →</button>
       </form>
     </div>
 
@@ -155,222 +194,164 @@ const { defaultZip = '' } = Astro.props;
   </div>
 </div>
 
-<script is:inline define:vars={{ siteConfig }}>
+<script is:inline>
   (function() {
     var wizard = document.getElementById('lead-wizard');
-    if (!wizard) return;
+    var form = document.getElementById('lead-wizard-form');
+    if (!wizard || !form) return;
 
     var currentStep = 1;
-    var requestType = 'combo'; // Default
+    var requestType = '';
+    var answers = {};
+    var formStartedAt = new Date().toISOString();
+    var idempotencyKey = (globalThis.crypto && crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) { var r = crypto.getRandomValues(new Uint8Array(1))[0] & 15; var v = c === 'x' ? r : (r & 3) | 8; return v.toString(16); }));
     var backBtn = document.getElementById('back-btn');
     var formFooter = document.getElementById('form-footer');
     var disqualifyPane = document.getElementById('disqualify-pane');
     var disqualifyMsg = document.getElementById('disqualify-message');
     var successPane = document.getElementById('success-pane');
-    
     var disqualifyTexts = {
-      owner: 'Unsere Partner-Fachbetriebe arbeiten ausschließlich mit Hauseigentümern zusammen. Mieter können wir leider nicht vermitteln.',
-      property: 'Dieses Portal vermittelt Angebote für freistehende Einfamilienhäuser und Zweifamilienhäuser. Mehrfamilienhäuser können wir leider nicht abdecken.',
-      roof_size: 'Für eine rentable PV-Anlage ist eine zusammenhängende freie Dachfläche von mindestens 20 m² erforderlich.',
-      asbestos: 'Aus Sicherheitsgründen belegen unsere Fachpartner keine Dächer mit Asbest- oder Schieferdeckung.',
-      heating_area: 'Wärmepumpen-Angebote können wir leider nur für Wohnflächen zwischen 80 m² und 250 m² vermitteln.',
-      timing: 'Unsere Partner-Betriebe können Kapazitäten nur für Projekte reservieren, die innerhalb der nächsten 6 Monate realisiert werden.'
+      owner: 'Unsere Partner-Fachbetriebe arbeiten ausschließlich mit Hauseigentümern zusammen.',
+      property: 'Mehrfamilienhäuser und Gewerbeobjekte können über diesen Dienst nicht vermittelt werden.',
+      roof_size: 'Für die Vermittlung ist eine nutzbare Dachfläche von mindestens 20 m² erforderlich.',
+      asbestos: 'Dächer mit Schiefer oder Asbest können nicht vermittelt werden.',
+      consumption: 'Für die Vermittlung ist ein jährlicher Stromverbrauch ab 1.500 kWh erforderlich.',
+      heating_area: 'Wärmepumpen-Angebote können nur für Wohnflächen zwischen 80 m² und 250 m² vermittelt werden.',
+      heat_pump_type: 'Dieser Wärmepumpentyp wird über diesen Dienst nicht vermittelt.',
+      location: 'Dieser Aufstellungsort wird über diesen Dienst nicht vermittelt.',
+      timing: 'Vermittelt werden nur Projekte, die innerhalb der nächsten sechs Monate beginnen.'
     };
 
     function showStep(step) {
       currentStep = step;
-      var panes = wizard.querySelectorAll('.step-pane[data-step]');
-      
-      panes.forEach(function(pane) {
-        var pStep = parseInt(pane.getAttribute('data-step'), 10);
-        if (pStep === currentStep) {
-          pane.classList.add('active');
-        } else {
-          pane.classList.remove('active');
-        }
+      wizard.querySelectorAll('.step-pane[data-step]').forEach(function(pane) {
+        pane.classList.toggle('active', Number(pane.getAttribute('data-step')) === currentStep);
       });
-
-      // Show/Hide back button
-      if (currentStep > 1 && currentStep <= 8) {
-        backBtn.style.visibility = 'visible';
-      } else {
-        backBtn.style.visibility = 'hidden';
-      }
+      backBtn.style.visibility = currentStep > 1 && currentStep <= 11 ? 'visible' : 'hidden';
+      if (currentStep === 11) updateProjectFields();
     }
 
-    // Determine the next step dynamically depending on selected requestType
-    function getNextStep(current) {
-      if (current === 1) return 2;
-      if (current === 2) return 3;
-      if (current === 3) {
-        // Skip roof size questions if user only wants a Heat Pump
-        if (requestType === 'hp') return 6;
-        return 4;
-      }
-      if (current === 4) return 5;
-      if (current === 5) {
-        // Skip heating area question if user only wants PV
-        if (requestType === 'pv') return 7;
-        return 6;
-      }
-      if (current === 6) return 7;
-      if (current === 7) return 8;
-      return 8;
+    function updateProjectFields() {
+      wizard.querySelectorAll('.project-field').forEach(function(field) {
+        var project = field.getAttribute('data-project');
+        var visible = requestType === 'combo' || requestType === project;
+        field.style.display = visible ? '' : 'none';
+        var input = field.querySelector('input');
+        if (input) { input.required = visible; if (!visible) input.value = ''; }
+      });
     }
 
-    function getPrevStep(current) {
-      if (current === 8) return 7;
-      if (current === 7) {
-        if (requestType === 'pv') return 5;
-        return 6;
-      }
-      if (current === 6) {
-        if (requestType === 'hp') return 3;
-        return 5;
-      }
-      if (current === 5) return 4;
-      if (current === 4) return 3;
-      if (current === 3) return 2;
-      if (current === 2) return 1;
+    function getNextStep(step) {
+      if (step === 1) return 2;
+      if (step === 2) return 3;
+      if (step === 3) return requestType === 'hp' ? 7 : 4;
+      if (step === 4) return 5;
+      if (step === 5) return 6;
+      if (step === 6) return requestType === 'pv' ? 10 : 7;
+      if (step === 7) return 8;
+      if (step === 8) return 9;
+      if (step === 9) return 10;
+      if (step === 10) return 11;
+      return 11;
+    }
+
+    function getPrevStep(step) {
+      if (step === 11) return 10;
+      if (step === 10) return requestType === 'pv' ? 6 : 9;
+      if (step === 9) return 8;
+      if (step === 8) return 7;
+      if (step === 7) return requestType === 'hp' ? 3 : 6;
+      if (step === 6) return 5;
+      if (step === 5) return 4;
+      if (step === 4) return 3;
+      if (step === 3) return 2;
       return 1;
     }
 
-    // Bind selection buttons
-    wizard.addEventListener('click', function(e) {
-      var btn = e.target.closest('button.form-select-btn');
+    wizard.addEventListener('click', function(event) {
+      var btn = event.target.closest('button.form-select-btn');
       if (!btn) return;
-
-      e.preventDefault();
-
-      // If step 1, save the selected type
-      if (currentStep === 1) {
-        requestType = btn.getAttribute('data-value');
-      }
-
+      event.preventDefault();
+      if (currentStep === 1) requestType = btn.getAttribute('data-value') || '';
+      var key = btn.getAttribute('data-detail-key');
+      var value = btn.getAttribute('data-detail-value');
+      if (key && value) answers[key] = value;
       if (btn.getAttribute('data-next') === 'true') {
-        var next = getNextStep(currentStep);
-        showStep(next);
+        showStep(getNextStep(currentStep));
       } else if (btn.getAttribute('data-disqualify')) {
-        var filter = btn.getAttribute('data-disqualify');
-        disqualifyMsg.textContent = disqualifyTexts[filter] || 'Ihre Angaben entsprechen leider nicht den Annahmekriterien der regionalen Fachbetriebe.';
-        
-        // Hide all steps, show disqualify panel
-        var panes = wizard.querySelectorAll('.step-pane');
-        panes.forEach(function(pane) { pane.classList.remove('active'); pane.classList.add('hidden'); });
+        var reason = btn.getAttribute('data-disqualify');
+        disqualifyMsg.textContent = disqualifyTexts[reason] || 'Ihre Angaben entsprechen leider nicht den Annahmekriterien.';
+        wizard.querySelectorAll('.step-pane').forEach(function(pane) { pane.classList.remove('active'); pane.classList.add('hidden'); });
         disqualifyPane.classList.add('active');
         disqualifyPane.classList.remove('hidden');
         formFooter.style.display = 'none';
       }
     });
 
-    // Back button click
-    backBtn.addEventListener('click', function() {
-      var prev = getPrevStep(currentStep);
-      showStep(prev);
-    });
-    // Form submit
-    var form = document.getElementById('lead-wizard-form');
-    if (form) {
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
+    backBtn.addEventListener('click', function() { showStep(getPrevStep(currentStep)); });
 
-        var mode = siteConfig.taptaphome.mode || 'api';
-
-        if (mode === 'redirect') {
-          // Hide all panels, show success
-          var panes = wizard.querySelectorAll('.step-pane');
-          panes.forEach(function(pane) { pane.classList.remove('active'); pane.classList.add('hidden'); });
-          successPane.classList.add('active');
-          successPane.classList.remove('hidden');
-          formFooter.style.display = 'none';
-
-          var pvLink = siteConfig.taptaphome.pv.trackingLink;
-          var hpLink = siteConfig.taptaphome.hp.trackingLink;
-
-          setTimeout(function() {
-            if (requestType === 'pv') {
-              window.location.href = pvLink;
-            } else if (requestType === 'hp') {
-              window.location.href = hpLink;
-            } else if (requestType === 'combo') {
-              window.open(pvLink, '_blank');
-              window.location.href = hpLink;
-            }
-          }, 1500);
-        } else if (mode === 'api') {
-          var submitBtn = form.querySelector('.form-submit-btn');
-          var originalBtnText = submitBtn ? submitBtn.innerText : '';
-          if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Wird gesendet...';
-          }
-
-          var job_details_pv = {
-            eigentumsverhaeltnisse: "Eigner / Entscheidungsbefugt",
-            objekt: "Einfamilienhaus",
-            dacheindeckung: "Dachziegel",
-            stromverbrauch: "3.500-4.500 kWh",
-            zeitpunkt_projektbegin: "In den nächsten 3 Monaten",
-            stromspeicher: "Weiß nicht / Beratung erwünscht"
-          };
-
-          var job_details_hp = {
-            eigentumsverhaeltnisse: "Eigner / Entscheidungsbefugt",
-            objekt: "Einfamilienhaus",
-            heizflaeche: 150,
-            heat_pump_type: "Luft-Wasser-Wärmepumpe",
-            heating_room_location: "Hauswirtschaftsraum",
-            zeitpunkt_projektbegin: "In den nächsten 3 Monaten"
-          };
-
-          // Form data collection
-          const formData = new FormData(form);
-          const data = Object.fromEntries(formData.entries());
-
-          var payload = {
-            firstname: data.firstname,
-            lastname: data.lastname,
-            email: data.email,
-            phone: data.phone,
-            zip: data.zip,
-            niche: requestType, // 'combo', 'pv', or 'hp'
-            domain: siteConfig.domain,
-            job_details_pv: job_details_pv,
-            job_details_hp: job_details_hp,
-            pageUrl: window.location.href
-          };
-
-          fetch('/api/lead', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          })
-          .then(res => res.json())
-          .then(resData => {
-            if (resData.success) {
-              var panes = wizard.querySelectorAll('.step-pane');
-              panes.forEach(function(pane) { pane.classList.remove('active'); pane.classList.add('hidden'); });
-              successPane.classList.add('active');
-              successPane.classList.remove('hidden');
-              formFooter.style.display = 'none';
-            } else {
-              alert('Fehler bei der Übermittlung: ' + (resData.errors ? resData.errors.join(', ') : 'Bitte überprüfen Sie Ihre Eingaben.'));
-              if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerText = originalBtnText;
-              }
-            }
-          })
-          .catch(err => {
-            console.error(err);
-            alert('Ein Netzwerkfehler ist aufgetreten. Bitte versuchen Sie es erneut.');
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.innerText = originalBtnText;
-            }
-          });
-        }
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      var required = ['eigentumsverhaeltnisse', 'objekt', 'zeitpunkt_projektbegin'];
+      if (requestType !== 'hp') required.push('dacheindeckung', 'stromverbrauch');
+      if (requestType !== 'pv') required.push('heat_pump_type', 'heating_room_location');
+      if (!requestType || required.some(function(key) { return !answers[key]; })) {
+        alert('Bitte beantworten Sie alle Projektfragen.');
+        return;
+      }
+      var data = Object.fromEntries(new FormData(form).entries());
+      var pvDetails = {};
+      var hpDetails = {};
+      ['eigentumsverhaeltnisse', 'objekt', 'zeitpunkt_projektbegin'].forEach(function(key) {
+        pvDetails[key] = answers[key]; hpDetails[key] = answers[key];
       });
-    }
+      if (requestType !== 'hp') {
+        pvDetails.dacheindeckung = answers.dacheindeckung;
+        pvDetails.stromverbrauch = answers.stromverbrauch;
+        pvDetails.dachflaeche = Number(data.dachflaeche);
+      }
+      if (requestType !== 'pv') {
+        hpDetails.heat_pump_type = answers.heat_pump_type;
+        hpDetails.heating_room_location = answers.heating_room_location;
+        hpDetails.heizflaeche = Number(data.heizflaeche);
+      }
+      var submitBtn = form.querySelector('.form-submit-btn');
+      var originalText = submitBtn ? submitBtn.innerText : '';
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.innerText = 'Wird gesendet...'; }
+      var payload = {
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        phone: data.phone,
+        street: data.street,
+        zip: data.zip,
+        city: data.city,
+        project: requestType,
+        projects: {
+          photovoltaics: pvDetails,
+          heat_pump: hpDetails
+        },
+        page_url: window.location.href,
+        consent: form.querySelector('[name="consent"]').checked,
+        consent_version: 'taptaphome-de-2026-08-12-v1',
+        consent_at: new Date().toISOString(),
+        form_started_at: formStartedAt,
+        idempotency_key: idempotencyKey,
+        website: data.website || ''
+      };
+      try {
+        var response = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        var result = await response.json().catch(function() { return { success: false, errors: ['Ungültige Serverantwort.'] }; });
+        if (!response.ok || result.success !== true) throw new Error(Array.isArray(result.errors) ? result.errors.join(', ') : 'Bitte versuchen Sie es erneut.');
+        wizard.querySelectorAll('.step-pane').forEach(function(pane) { pane.classList.remove('active'); pane.classList.add('hidden'); });
+        successPane.classList.add('active');
+        successPane.classList.remove('hidden');
+        formFooter.style.display = 'none';
+      } catch (error) {
+        alert('Fehler bei der Übermittlung: ' + (error instanceof Error ? error.message : 'Bitte versuchen Sie es erneut.'));
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.innerText = originalText; }
+      }
+    });
   })();
 </script>
