@@ -6,6 +6,7 @@ interface Props {
 }
 
 const { defaultZip = '' } = Astro.props;
+const previewMode = import.meta.env.PUBLIC_PREVIEW_MODE === 'true';
 ---
 
 <div class="lead-form-container" id="devis-form">
@@ -16,11 +17,11 @@ const { defaultZip = '' } = Astro.props;
   </div>
 
   <!-- Wizard Body -->
-  <div class="lead-form-body" id="lead-wizard">
+  <div class="lead-form-body" id="lead-wizard" data-preview-mode={previewMode ? 'true' : 'false'}>
     
     <!-- Step 1: Request Type -->
     <div class="step-pane active" data-step="1">
-      <span class="step-tag">Schritt 1 von 10</span>
+      <span class="step-tag">Schritt 1 von 11</span>
       <h4>Was möchten Sie anfragen?</h4>
       <div class="form-btn-list">
         <button type="button" class="form-select-btn" data-next="true" data-value="combo">☀️ Solarstrom + 🔥 Wärmepumpe (Kombipaket)</button>
@@ -31,7 +32,7 @@ const { defaultZip = '' } = Astro.props;
 
     <!-- Step 2: Ownership -->
     <div class="step-pane" data-step="2">
-      <span class="step-tag">Schritt 2 von 10</span>
+      <span class="step-tag">Schritt 2 von 11</span>
       <h4>Sind Sie Eigentümer der Immobilie?</h4>
       <div class="form-btn-list">
         <button type="button" class="form-select-btn" data-next="true" data-detail-key="eigentumsverhaeltnisse" data-detail-value="Eigner / Entscheidungsbefugt">Ja, ich bin Eigentümer</button>
@@ -41,7 +42,7 @@ const { defaultZip = '' } = Astro.props;
 
     <!-- Step 3: Building Type -->
     <div class="step-pane" data-step="3">
-      <span class="step-tag">Schritt 3 von 10</span>
+      <span class="step-tag">Schritt 3 von 11</span>
       <h4>Um welche Gebäudeart handelt es sich?</h4>
       <div class="form-btn-list">
         <button type="button" class="form-select-btn" data-next="true" data-detail-key="objekt" data-detail-value="Einfamilienhaus">Einfamilienhaus</button>
@@ -52,7 +53,7 @@ const { defaultZip = '' } = Astro.props;
 
     <!-- Step 4: Roof Size (Solar/Combo only) -->
     <div class="step-pane" data-step="4">
-      <span class="step-tag">Schritt 4 von 10</span>
+      <span class="step-tag">Schritt 4 von 11</span>
       <h4>Wie groß ist die nutzbare Dachfläche ungefähr?</h4>
       <div class="form-btn-list">
         <button type="button" class="form-select-btn" data-next="true">Mehr als 20 m²</button>
@@ -62,7 +63,7 @@ const { defaultZip = '' } = Astro.props;
 
     <!-- Step 5: Roof Material (Solar/Combo only) -->
     <div class="step-pane" data-step="5">
-      <span class="step-tag">Schritt 5 von 10</span>
+      <span class="step-tag">Schritt 5 von 11</span>
       <h4>Welche Dachdeckung liegt vor?</h4>
       <div class="form-btn-list">
         <button type="button" class="form-select-btn" data-next="true" data-detail-key="dacheindeckung" data-detail-value="Dachziegel">Dachziegel</button>
@@ -78,7 +79,7 @@ const { defaultZip = '' } = Astro.props;
 
     <!-- Step 6: Electricity consumption (Solar/Combo only) -->
     <div class="step-pane" data-step="6">
-      <span class="step-tag">Schritt 6 von 10</span>
+      <span class="step-tag">Schritt 6 von 11</span>
       <h4>Wie hoch ist Ihr jährlicher Stromverbrauch?</h4>
       <div class="form-btn-list">
         <button type="button" class="form-select-btn" data-next="true" data-detail-key="stromverbrauch" data-detail-value="1.500-2.500 kWh">1.500-2.500 kWh</button>
@@ -93,7 +94,7 @@ const { defaultZip = '' } = Astro.props;
 
     <!-- Step 7: Heating Area (Heatpump/Combo only) -->
     <div class="step-pane" data-step="7">
-      <span class="step-tag">Schritt 7 von 10</span>
+      <span class="step-tag">Schritt 7 von 11</span>
       <h4>Wie groß ist die zu beheizende Wohnfläche?</h4>
       <div class="form-btn-list">
         <button type="button" class="form-select-btn" data-next="true">Zwischen 80 m² und 250 m²</button>
@@ -103,7 +104,7 @@ const { defaultZip = '' } = Astro.props;
 
     <!-- Step 8: Heat pump type (Heatpump/Combo only) -->
     <div class="step-pane" data-step="8">
-      <span class="step-tag">Schritt 8 von 10</span>
+      <span class="step-tag">Schritt 8 von 11</span>
       <h4>Welchen Wärmepumpen-Typ wünschen Sie?</h4>
       <div class="form-btn-list">
         <button type="button" class="form-select-btn" data-next="true" data-detail-key="heat_pump_type" data-detail-value="Luft-Wasser-Wärmepumpe">Luft-Wasser-Wärmepumpe</button>
@@ -115,7 +116,7 @@ const { defaultZip = '' } = Astro.props;
 
     <!-- Step 9: Installation location (Heatpump/Combo only) -->
     <div class="step-pane" data-step="9">
-      <span class="step-tag">Schritt 9 von 10</span>
+      <span class="step-tag">Schritt 9 von 11</span>
       <h4>Wo soll die Wärmepumpe aufgestellt werden?</h4>
       <div class="form-btn-list">
         <button type="button" class="form-select-btn" data-next="true" data-detail-key="heating_room_location" data-detail-value="Keller">Keller</button>
@@ -128,7 +129,7 @@ const { defaultZip = '' } = Astro.props;
 
     <!-- Step 10: Timing -->
     <div class="step-pane" data-step="10">
-      <span class="step-tag">Schritt 10 von 10</span>
+      <span class="step-tag">Schritt 10 von 11</span>
       <h4>Wann soll das Projekt umgesetzt werden?</h4>
       <div class="form-btn-list">
         <button type="button" class="form-select-btn" data-next="true" data-detail-key="zeitpunkt_projektbegin" data-detail-value="Umgehend">Umgehend</button>
@@ -145,21 +146,21 @@ const { defaultZip = '' } = Astro.props;
       <form id="lead-wizard-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
         <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" />
         <div class="form-input-group">
-          <label>Postleitzahl</label>
-          <input type="text" name="zip" required pattern="[0-9]{5}" placeholder="z.B. 10115" value={defaultZip} class="form-text-input" />
+          <label for="lead-zip">Postleitzahl</label>
+          <input id="lead-zip" type="text" name="zip" required pattern="[0-9]{5}" maxlength="5" inputmode="numeric" placeholder="z.B. 10115" value={defaultZip} class="form-text-input" />
         </div>
         <div class="grid-2col-fields">
-          <div class="form-input-group"><label>Vorname</label><input type="text" name="firstname" required maxlength="120" autocomplete="given-name" placeholder="Vorname" class="form-text-input" /></div>
-          <div class="form-input-group"><label>Nachname</label><input type="text" name="lastname" required maxlength="120" autocomplete="family-name" placeholder="Nachname" class="form-text-input" /></div>
+          <div class="form-input-group"><label for="lead-firstname">Vorname</label><input id="lead-firstname" type="text" name="firstname" required minlength="2" maxlength="100" autocomplete="given-name" placeholder="Vorname" class="form-text-input" /></div>
+          <div class="form-input-group"><label for="lead-lastname">Nachname</label><input id="lead-lastname" type="text" name="lastname" required minlength="2" maxlength="100" autocomplete="family-name" placeholder="Nachname" class="form-text-input" /></div>
         </div>
-        <div class="form-input-group"><label>E-Mail-Adresse</label><input type="email" name="email" required maxlength="254" autocomplete="email" placeholder="name@beispiel.de" class="form-text-input" /></div>
-        <div class="form-input-group"><label>Telefonnummer</label><input type="tel" name="phone" required maxlength="40" autocomplete="tel" placeholder="z.B. 0170 1234567" class="form-text-input" /></div>
-        <div class="form-input-group"><label>Straße und Hausnummer</label><input type="text" name="street" required maxlength="200" autocomplete="street-address" placeholder="Musterstraße 12" class="form-text-input" /></div>
+        <div class="form-input-group"><label for="lead-email">E-Mail-Adresse</label><input id="lead-email" type="email" name="email" required maxlength="254" autocomplete="email" placeholder="name@beispiel.de" class="form-text-input" /></div>
+        <div class="form-input-group"><label for="lead-phone">Telefonnummer</label><input id="lead-phone" type="tel" name="phone" required maxlength="40" pattern="(?=(?:\D*\d){7,15}\D*$)[+0-9() ./-]+" autocomplete="tel" placeholder="z.B. 0170 1234567" class="form-text-input" /></div>
+        <div class="form-input-group"><label for="lead-street">Straße und Hausnummer</label><input id="lead-street" type="text" name="street" required maxlength="200" pattern="(?=.*[A-Za-zÄÖÜäöüß])(?=.*[0-9]).+" autocomplete="street-address" placeholder="z.B. Hauptstraße 12" class="form-text-input" /></div>
         <div class="grid-2col-fields">
-          <div class="form-input-group"><label>Ort</label><input type="text" name="city" required maxlength="120" autocomplete="address-level2" placeholder="Ort" class="form-text-input" /></div>
-          <div class="form-input-group project-field" data-project="pv"><label>Dachfläche (m²)</label><input type="number" name="dachflaeche" min="20" max="10000" step="1" inputmode="numeric" class="form-text-input" /></div>
+          <div class="form-input-group"><label for="lead-city">Ort</label><input id="lead-city" type="text" name="city" required minlength="2" maxlength="120" autocomplete="address-level2" placeholder="Ort" class="form-text-input" /></div>
+          <div class="form-input-group project-field" data-project="pv"><label for="lead-dachflaeche">Dachfläche (m²)</label><input id="lead-dachflaeche" type="number" name="dachflaeche" min="20" max="10000" step="1" inputmode="numeric" class="form-text-input" /></div>
         </div>
-        <div class="form-input-group project-field" data-project="hp"><label>Beheizte Wohnfläche (m²)</label><input type="number" name="heizflaeche" min="80" max="250" step="1" inputmode="numeric" class="form-text-input" /></div>
+        <div class="form-input-group project-field" data-project="hp"><label for="lead-heizflaeche">Beheizte Wohnfläche (m²)</label><input id="lead-heizflaeche" type="number" name="heizflaeche" min="80" max="250" step="1" inputmode="numeric" class="form-text-input" /></div>
         <label class="form-legal-note" style="display:flex;align-items:flex-start;gap:0.5rem;text-align:left;">
           <input type="checkbox" name="consent" required style="margin-top:0.15rem;" />
           <span>Ich willige ein, dass meine Angaben zur Bearbeitung meiner Angebotsanfrage an <strong>TapTapHome (DAA GmbH)</strong> übermittelt werden. Ich habe die <a href="/datenschutz" target="_blank" rel="noopener noreferrer">Datenschutzhinweise</a> und die <a href="https://www.taptaphome.com/de/agb-nutzer" target="_blank" rel="noopener noreferrer">AGB für Anfragesteller:innen</a> gelesen.</span>
@@ -199,6 +200,7 @@ const { defaultZip = '' } = Astro.props;
     var wizard = document.getElementById('lead-wizard');
     var form = document.getElementById('lead-wizard-form');
     if (!wizard || !form) return;
+    var previewMode = wizard.getAttribute('data-preview-mode') === 'true';
 
     var currentStep = 1;
     var requestType = '';
@@ -340,6 +342,15 @@ const { defaultZip = '' } = Astro.props;
         idempotency_key: idempotencyKey,
         website: data.website || ''
       };
+      if (previewMode) {
+        var previewMessage = successPane.querySelector('p');
+        if (previewMessage) previewMessage.textContent = 'Vorschau aktiv: Diese Anfrage wurde nicht versendet.';
+        wizard.querySelectorAll('.step-pane').forEach(function(pane) { pane.classList.remove('active'); pane.classList.add('hidden'); });
+        successPane.classList.add('active');
+        successPane.classList.remove('hidden');
+        formFooter.style.display = 'none';
+        return;
+      }
       try {
         var response = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         var result = await response.json().catch(function() { return { success: false, errors: ['Ungültige Serverantwort.'] }; });
